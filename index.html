@@ -10,8 +10,8 @@
     <title> Geometric Optics </title>
 </head>
     <body>
-        
-        <nav class="teal darken-2">
+
+        <nav class="light-blue darken-4">
             <div class="row">
                 <div class="col m1 l1"></div>
                 <div class="col m10 l10">
@@ -43,19 +43,23 @@
             <div class="col m2 l2">
                 
                 <ul class="collection with-header parameters-area">
-                    <li class="collection-header"><h4>Parameters</h4></li>
+                    <li class="collection-header"><h5>Parameters</h5></li>
 
                     <li class="collection-item">
-                        <p class="laser-position-title"> <i class="material-icons left">replay</i> Laser position </p>
+                        <p class="laser-position-title"> <i class="material-icons left">flare</i> Laser intensity  </p>
+                    </li>
+
+                    <li class="collection-item">
+                        <p class="laser-position-title"> <i class="material-icons left">slow_motion_video</i> Laser position </p>
                         
                         <div class="container-laser-position">
                             <div class="input-field laser-rotation-input">
-                                <input disabled placeholder="Laser rotation" id="txtLaserPosition" type="text" class="validate" value="45°">
+                                <input placeholder="Laser rotation" id="txtLaserPosition" type="text" class="validate" value="5°">
                             </div>
 
                             <div class="position-buttons">
-                                <button id="btnMoreDegrees" class="waves-effect waves btn-small btnPaintCSS"><i class="large material-icons">expand_less</i></button>
-                                <button id="btnLessDegrees" class="waves-effect waves btn-small btnPaintCSS"><i class="large material-icons">expand_more</i></button>
+                                <button id="btnMoreDegrees" class="waves-effect waves btn-small btnPaintCSS light-blue darken-4"><i class="large material-icons">expand_less</i></button>
+                                <button id="btnLessDegrees" class="waves-effect waves btn-small btnPaintCSS light-blue darken-4"><i class="large material-icons">expand_more</i></button>
                             </div>
 
                         </div>
@@ -69,10 +73,6 @@
                                     <input id="checkboxReflection" type="checkbox">
                                     <span  class="lever"></span>
                                 </label>
-                            </div>
-
-                            <div class="input-field container-text-box">
-                                <input disabled id="textbox-reflection" placeholder="" type="text" class="validate" value="45°">
                             </div>
                         </div>
                     </li>
@@ -90,22 +90,36 @@
 
                         </div>
 
-                        <div class="refraction-box">
-                            <div class="select-refraction-index-container">
-                                <label>Refraction index 2</label>
-                                <select id="select-refraction-index" class="browser-default">
-                                  <option value="1">Aire</option>
-                                  <option value="2">Agua</option>
-                                  <option value="3">V&iacute;drio</option>
-                                </select>
+                    </li>
+
+                    <li class="collection-item">
+                        <div class="laser-position-title">
+                            
+                            <div class="refraction-box">
+                                <div> <i class="material-icons left">blur_on</i> Refraction index  </div>
+                                <div class="select-refraction-index-container">
+                                    <select id="select-refraction-index" class="browser-default">
+                                      <option value="1">Air</option>
+                                      <option value="2">Whater</option>
+                                      <option value="3">Glass</option>
+                                    </select>
+                                </div>
                             </div>
-    
-                            <div class="input-field container-text-box">
-                                <input disabled id="textbox-refraction" placeholder="" type="text" class="validate" value="45°">
-                            </div>
+
                         </div>
+                    </li>
 
+                    <li class="collection-item">
+                        <div class="laser-position-title">
+                            <div> <i class="material-icons left">pie_chart_outlined</i> Transportador  </div>
+                            <div class="switch switch-transportador">
+                                <label>
+                                    <input id="checkboxImgTransportador" type="checkbox">
+                                    <span  class="lever"></span>
+                                </label>
+                            </div>
 
+                        </div>
                     </li>
 
                     <li class="collection-item"> </li>
@@ -124,27 +138,57 @@
                 <p class="ref-index2-container"> n<sub>2</sub> = <a class="ref-index2"></a>  </p>
             </div>
 
-            <div class="col m2 l2">
+            <div class="col m2 l2 col-results">
                 <ul class="collection with-header parameters-area">
+                    <li class="collection-header"><h5>Results</h5></li>
 
                     <li class="collection-item">
-                        <p class="laser-position-title"> <i class="material-icons left">undo</i> Laser position </p>                        
+                        <p class="laser-position-title"> <i class="material-icons left">share</i> Angles </p>
+
+                        <table class="table-angles striped">
+                            <thead>
+                              <tr>
+                                  <th class="center-align">Reflection</th>
+                                  <th class="center-align">Refraction</th>
+                              </tr>
+                            </thead>
+                    
+                            <tbody>
+                              <tr class="tr-data">
+                                <td class="angle-reflection-result center-align"></td>
+                                <td class="angle-refraction-result center-align"></td>
+                              </tr>
+                            </tbody>
+                        </table>
+
                     </li>
 
                     <li class="collection-item">
-                        <p class="laser-position-title"> <i class="material-icons left">undo</i> Laser position </p>                        
+                        <p class="laser-position-title"> <i class="material-icons left">developer_board</i> Coefficients </p>
+
+                        <table class="table-coefficients striped">
+                            <thead>
+                              <tr>
+                                  <th class="center-align">Reflectance</th>
+                                  <th class="center-align">Transmittance</th>
+                              </tr>
+                            </thead>
+                    
+                            <tbody>
+                              <tr class="tr-data">
+                                <td class="resultReflectance center-align"></td>
+                                <td class="resultTransmittance center-align"></td>
+                              </tr>
+                            </tbody>
+                          </table>
                     </li>
 
                     <li class="collection-item">
-                        <p class="laser-position-title"> <i class="material-icons left">undo</i> Laser position </p>                        
+                        <p class="laser-position-title"> <i class="material-icons left">show_chart</i> alpha <sub>1</sub> </p>
                     </li>
 
                     <li class="collection-item">
-                        <p class="laser-position-title"> <i class="material-icons left">show_chart</i> Refraction </p>
-                    </li>
-
-                    <li class="collection-item">
-                        <p class="laser-position-title"> <i class="material-icons left">undo</i> Laser position </p>
+                        <p class="laser-position-title"> <i class="material-icons left">undo</i> alpha <sub>2</sub> </p>
                     </li>
 
                     <li class="collection-item">

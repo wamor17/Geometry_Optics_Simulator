@@ -11,10 +11,11 @@ body{
     box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
     z-index: -1;
     display: block;
+    opacity: 1;
 }
 
-.buttons-drawing button{
-    display: block;
+.col-results{
+    width: 300px !important;
 }
 
 #btnDrawGuideLines, #btnDrawCircle{
@@ -56,7 +57,7 @@ body{
     bottom: auto;
     width: 30%;
     z-index: 1;
-    opacity: 0.7;
+    opacity: 0.4;
 }
 
 .collection-item{
@@ -88,10 +89,16 @@ body{
 }
 
 #txtLaserPosition{
-    width: 130px;
-    font-size: 50px !important;
-    margin: 25px 0 10px 0 !important;
+    position: relative;
+    top: -5px;
+    left: 15px;
+    width: 100px;
+    height: 65px;
+    font-size: 60px !important;
+    margin: 0 0 0 0 !important;
+    padding: 2px 10px 2px 15px;
     text-align: center;
+    border-bottom: 0 !important;
 }
 
 .laser-position-title{
@@ -101,7 +108,8 @@ body{
 .laser-position-title div{
     display: inline-block;
 }
- .switch-reflection, .switch-refraction{
+
+.switch-reflection, .switch-refraction, .switch-transportador{
      position: absolute;
      right: 0;
  }
@@ -121,7 +129,7 @@ body{
     left: 28%;
 }
 
-#textbox-reflection{
+#textbox-reflection, #checkboxImgTransportador{
     margin-bottom: 0px !important;
     width: 80%;
     font-size: 35px;
@@ -133,8 +141,8 @@ body{
 }
 
 .select-refraction-index-container{
-    margin: 5px 5px 5px 20px;
-
+    margin: 5px 5px 5px 38px;
+    width: 70%;
 }
 
 .container-text-box{
@@ -153,3 +161,52 @@ body{
     text-align: center;
 }
 
+.txt-output-reflection{
+    margin: 2px 10px 2px 10px;
+}
+
+.result-reflection-container p, .result-refraction-container p{
+    display: inline-block;
+}
+
+.results-simulation{
+    margin: 0 0px 0 20px !important;
+}
+
+.angle-reflection-result, .angle-refraction-result{
+    position: relative;
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 15px;
+}
+
+.row-menu-navbar{
+    margin-bottom: 0 !important;
+}
+
+.table-coefficients{
+    margin: 0 5px 5px 15px;
+    width: 90% !important;
+}
+
+.table-angles{
+    margin: 0 5px 5px 15px;
+    width: 90% !important;
+}
+
+th, td{
+    padding: 8px !important;
+}
+
+.resultReflectance, .resultTransmittance{
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.tr-data{
+    border-bottom: 0 !important;
+}
+
+.collection-header{
+    padding: 0 20px !important;
+}
