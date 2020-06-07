@@ -46,21 +46,85 @@
                     <li class="collection-header"><h5>Parameters</h5></li>
 
                     <li class="collection-item">
-                        <p class="laser-position-title"> <i class="material-icons left">flare</i> Laser intensity  </p>
-                    </li>
-
-                    <li class="collection-item">
                         <p class="laser-position-title"> <i class="material-icons left">slow_motion_video</i> Laser position </p>
                         
                         <div class="container-laser-position">
                             <div class="input-field laser-rotation-input">
-                                <input placeholder="Laser rotation" id="txtLaserPosition" type="text" class="validate" value="5°">
+                                <input placeholder="Laser rotation" id="txtLaserPosition" type="text" class="validate" value="30°">
                             </div>
 
                             <div class="position-buttons">
-                                <button id="btnMoreDegrees" class="waves-effect waves btn-small btnPaintCSS light-blue darken-4"><i class="large material-icons">expand_less</i></button>
-                                <button id="btnLessDegrees" class="waves-effect waves btn-small btnPaintCSS light-blue darken-4"><i class="large material-icons">expand_more</i></button>
+                                <button id="btnMoreDegrees" class="waves-effect waves btn-small btnPaintCSS light-blue darken-2 degrees-icon"><i class="large material-icons">expand_less</i></button>
+                                <button id="btnLessDegrees" class="waves-effect waves btn-small btnPaintCSS light-blue darken-2 degrees-icon"><i class="large material-icons">expand_more</i></button>
                             </div>
+
+                        </div>
+                    </li>
+
+                    <li class="collection-item">
+                        <p class="laser-position-title"> <i class="material-icons left">flare</i> Laser intensity  </p>
+
+                        <div class="container-laser-position">
+                            <div class="input-field laser-rotation-input">
+                                <input id="txt-laser-intensity" type="text" class="validate" value="20 mW">
+                            </div>
+
+                            <div class="position-intensity-buttons">
+                                <button id="btn-more-laser-intensity" class="waves-effect waves btn light-blue darken-2 laser-icon"><i class="large material-icons">expand_less</i></button>
+                                <button id="btn-less-laser-intensity" class="waves-effect waves btn light-blue darken-2 laser-icon"><i class="large material-icons">expand_more</i></button>
+                            </div>
+
+                        </div>
+                    </li>
+
+                    <li class="collection-item">
+                        <div class="laser-position-title">
+                            
+                            <div> <i class="material-icons left">blur_on</i> Refractive index 2 </div>
+
+                            <table class="table-refractive-indices striped">
+                                <thead>
+                                  <tr>
+<!--                                    <th class="center-align"> Refractive index 2 <div class="refractive-indices-notation"> n <sub>2</sub> </div> </th> -->
+<!--                                    <th class="center-align refractive-indices-notation">
+                                        <div class="numeration-refractive-index-3"></div> n <sub>3</sub> </div>
+                                        
+                                        <div class="switch switch-refractive-index-3">
+                                            <label>
+                                                <input id="checkbox-activate-index-3" type="checkbox">
+                                                <span  class="lever"></span>
+                                            </label>
+                                        </div>
+                                    </th>
+-->
+                                  </tr>
+                                </thead>
+                        
+                                <tbody>
+                                  <tr>
+                                    <td>
+                                        <div class="select-refractive-index-container">
+                                            <select id="select-refractive-index-2" class="browser-default">
+                                              <option value="1">Air</option>
+                                              <option value="2">Water</option>
+                                              <option value="3">Glass</option>
+                                            </select>
+                                        </div>
+                                    </td>
+
+<!--                                    <td>
+                                        <div class="select-refractive-index-container">
+                                            <select id="select-refractive-index-3" class="browser-default" disabled>
+                                              <option value="1">Air</option>
+                                              <option value="2">Water</option>
+                                              <option value="3">Glass</option>
+                                            </select>
+                                        </div>
+                                    </td>
+-->
+                                  </tr>
+                                </tbody>
+                              </table>
 
                         </div>
                     </li>
@@ -94,24 +158,7 @@
 
                     <li class="collection-item">
                         <div class="laser-position-title">
-                            
-                            <div class="refraction-box">
-                                <div> <i class="material-icons left">blur_on</i> Refraction index  </div>
-                                <div class="select-refraction-index-container">
-                                    <select id="select-refraction-index" class="browser-default">
-                                      <option value="1">Air</option>
-                                      <option value="2">Whater</option>
-                                      <option value="3">Glass</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                        </div>
-                    </li>
-
-                    <li class="collection-item">
-                        <div class="laser-position-title">
-                            <div> <i class="material-icons left">pie_chart_outlined</i> Transportador  </div>
+                            <div> <i class="material-icons left">pie_chart_outlined</i> Protactor  </div>
                             <div class="switch switch-transportador">
                                 <label>
                                     <input id="checkboxImgTransportador" type="checkbox">
@@ -128,6 +175,7 @@
                 
             </div>
 
+            <!-- Pizarron para pintar las simulaciones -->
             <div class="col m6 l6">
                 <div class="container-svg">
                     <svg id="svg_paint" height="100%" width="100%"> </svg>
@@ -136,8 +184,10 @@
                 <img src="Resource/images/transportador.png" id="img-transportador" class="img-transportador">
                 <p class="ref-index1-container"> n<sub>1</sub> = <a class="ref-index1"></a>  </p>
                 <p class="ref-index2-container"> n<sub>2</sub> = <a class="ref-index2"></a>  </p>
+                <p class="ref-index3-container"> n<sub>3</sub> = <a class="ref-index3"></a>  </p>
             </div>
 
+            <!-- Columna para los resultados -->
             <div class="col m2 l2 col-results">
                 <ul class="collection with-header parameters-area">
                     <li class="collection-header"><h5>Results</h5></li>
@@ -180,11 +230,22 @@
                                 <td class="resultTransmittance center-align"></td>
                               </tr>
                             </tbody>
-                          </table>
+                        </table>
                     </li>
 
                     <li class="collection-item">
-                        <p class="laser-position-title"> <i class="material-icons left">show_chart</i> alpha <sub>1</sub> </p>
+                    </li>
+
+<!--
+                    <li class="collection-item">
+                        <p class="laser-position-title"> <i class="material-icons left">trending_flat</i> Max distance </p>
+                        <table class="table-coefficients striped">
+                            <tbody>
+                              <tr class="tr-data">
+                                <td class="result-max-distance center-align"> 2 m </td>
+                              </tr>
+                            </tbody>
+                        </table>
                     </li>
 
                     <li class="collection-item">
@@ -192,62 +253,59 @@
                     </li>
 
                     <li class="collection-item">
-<!--                        <div class="button-drawing">
-                            <button id="btnDrawGuideLines" class="waves-effect waves btn-small btnPaintCSS">Guide lines</button>
-                            <button id="btnDrawCircle" class="waves-effect waves btn-small btnPaintCSS">Draw circle</button>
--->
-                        </div>
+                        <button class="btn waves-effect waves-light btn-draw-circle light-blue darken-4" type="submit" name="action">
+                            Draw circle <i class="material-icons left">brightness_1</i>
+                        </button>
                     </li>
-                    
+-->
                 </ul>
             </div>
 
             <div class="col m1 l1"></div>
+        </div><br><br><br>
 
-            <footer class="page-footer light-blue darken-4">
-                <div class="row">
+        <footer class="page-footer light-blue darken-4">
+            <div class="row">
 
-                    <div class="col m1 l1"></div>
-                    <div class="col m3 l3">
-                        <img class="imagen-ug" src="Resource/images/escudo.png" alt="Escudo oficial de la Universidad de Guanajuato" href="www.ugto.mx">
-                    </div>
-
-                    <div class="col m5 l5">
-                        <div class="course-information">
-                            <h5 class="white-text center-align">Universidad de Guanajuato</h5>
-                            <h6 class="white-text center-align">División de Ingenierías del Campus Irapuato-Salamanca</h6>
-                            <h6 class="white-text center-align">Departamento de Estudios Multidisciplinarios de Yuriria</h6> <br>
-
-                            <h6 class="white-text center-align">Simulador creado por: <br> Ing. Walter Alejandro Moreno Ramírez</h6>
-                            <h6 class="white-text center-align">Estudiante del programa: <br> Maestría en Ingeniería en Electrónica Aplicada</h6>
-                            <h6 class="white-text center-align">Para la materia: <br> Modelado de Sistemas</h6>
-                            <h6 class="white-text center-align">Impartida por: <br> Dra. Mónica Trejo Durán</h6>
-
-                            <p class="grey-text text-lighten-4 center-align">  </p>
-                        </div>
-                    </div>
-
-                    <div class="col m3 l3">
-                        <h5 class="white-text"> Información de contacto </h5>
-                        <ul>
-                            <h6>Correo electr&oacute;nico:</h6>
-                            <li><a class="grey-text text-lighten-3" href="#!">wa.morenoramirez@ugto.com</a></li>
-                            <li><a class="grey-text text-lighten-3" href="#!">wa.morenoramirez@gmail.com</a></li> <br>
-                            
-                            <h6>Redes sociales:</h6>
-                            <li><a class="grey-text text-lighten-3" href="https://www.facebook.com/walteralejandromr">Facebook</a></li>
-                            <li><a class="grey-text text-lighten-3" href="https://www.linkedin.com/in/walter-alejandro-moreno-ram%C3%ADrez-91846a1a5/">Linkedin</a></li>
-                        </ul>
-                    </div>
-
+                <div class="col m1 l1"></div>
+                <div class="col m3 l3">
+                    <img class="imagen-ug" src="Resource/images/escudo.png" alt="Escudo oficial de la Universidad de Guanajuato" href="www.ugto.mx">
                 </div>
-                <div class="footer-copyright">
-                  <div class="container">
-                  2020 MIT License
-                  <a class="grey-text text-lighten-4 right" href="https://github.com/wamor17/Geometry_Optics_Simulator"> Github repository </a>
-                  </div>
+
+                <div class="col m5 l5">
+                    <div class="course-information"> <br>
+                        <h6 class="white-text center-align">DIVISI&Oacute;N DE INGENIER&Iacute;AS DEL CAMPUS IRAPUATO-SALAMANCA (DICIS)</h6>
+                        <h6 class="white-text center-align">DEPARTAMENTO DE ESTUDIOS MULTIDISCIPLINARIOS DE YURIRIA (DEM Yuriria)</h6> <br>
+                        <h6 class="white-text center-align">Simulador creado por: <br> ING. WALTER ALEJANDRO MORENO RAM&Iacute;REZ</h6>
+                        <h6 class="white-text center-align">Estudiante del programa: <br> MAESTRÍA EN INGENIER&Iacute;A ELECTR&Oacute;NICA APLICADA</h6>
+                        <h6 class="white-text center-align">Para la materia: <br> MODELADO DE SISTEMAS </h6>
+                        <h6 class="white-text center-align">Impartida por: <br> DRA. M&Oacute;NICA TREJO DUR&Aacute;N </h6>
+
+                        <p class="grey-text text-lighten-4 center-align">  </p>
+                    </div>
                 </div>
-              </footer>
+
+                <div class="col m3 l3">
+                    <h5 class="white-text"> Información de contacto </h5>
+                    <ul>
+                        <h6>Correo electr&oacute;nico:</h6>
+                        <li><a class="grey-text text-lighten-3" href="#!">wa.morenoramirez@ugto.com</a></li>
+                        <li><a class="grey-text text-lighten-3" href="#!">wa.morenoramirez@gmail.com</a></li> <br>
+                        
+                        <h6>Redes sociales:</h6>
+                        <li><a class="grey-text text-lighten-3" href="https://www.facebook.com/walteralejandromr">Facebook</a></li>
+                        <li><a class="grey-text text-lighten-3" href="https://www.linkedin.com/in/walter-alejandro-moreno-ram%C3%ADrez-91846a1a5/">Linkedin</a></li>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="footer-copyright">
+                <div class="container">
+                2020 MIT License
+                <a class="grey-text text-lighten-4 right" href="https://github.com/wamor17/Geometry_Optics_Simulator"> Github repository </a>
+                </div>
+            </div>
+        </footer>
 
         <script src="Resource/js/jquery-3.5.1.min.js"></script>
         <script src="Resource/js/materialize.min.js"></script>
