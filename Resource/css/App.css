@@ -43,6 +43,7 @@ body{
     width: 30%;
     z-index: 1;
     opacity: 0.4;
+    border-radius: 100%;
 }
 
 .collection-item{
@@ -115,9 +116,8 @@ body{
 }
 
 .ref-index3-container{
-    top: 65%;
-    left: 28%;
-    display: none;
+    top: 68%;
+    left: 28.3%;
 }
 
 #textbox-reflection, #checkboxImgTransportador{
@@ -299,4 +299,36 @@ th, td{
     margin-right: -20px;
 }
 
+.ref-index3-container{
+    display: none;
+}
 
+.color-box{
+    width: 300px;
+    height: 40px;
+    background-color: rgb(220, 220, 220);
+    border-radius: 5px;
+    background: linear-gradient(90deg, rgb(133, 33, 139) 0%, rgb(212, 2, 251) 9%, rgb(0, 0, 255) 16%, rgb(48, 155, 255) 20%, rgb(0, 255, 255) 22%, rgb(0, 255, 0) 50%, rgb(255, 255, 0) 60%, rgb(255, 255, 120) 64%, rgb(254, 102, 1) 85%, rgb(255, 0, 0) 90%, rgb(180, 0, 0) 100% );
+}
+
+.color-slider-container div{
+    display: block;
+}
+
+.color-slider-container{
+    position: absolute;
+    top: 13%;
+    left: 26.7%;
+}
+
+.range-field{
+    margin-bottom: 0;
+    margin-top: -10px;
+}
+
+.img-espectro-visible{
+    position: absolute;
+    top: 15%;
+    width: 100%;
+    height: 40px;
+}
