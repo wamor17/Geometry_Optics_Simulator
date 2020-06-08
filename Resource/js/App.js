@@ -282,14 +282,22 @@ function WavelengthToRGB(wavelength) {
 }
 
 function ChangeLinesColor(){
+    var type_material =  $('#select-refractive-index-2').val();
+    var degrees = parseInt($('#txtLaserPosition').val().split('°')[0]);
+    var degreesRefraction = Snell_Law(1, RefractionIndex, degrees);
     var Color = WavelengthToRGB( $('#range-color').val() );
+
     R = Color[0];
     G = Color[1];
     B = Color[2];
-
-    var degrees = parseInt($('#txtLaserPosition').val().split('°')[0]);
-    var degreesRefraction = Snell_Law(1, RefractionIndex, degrees);
-    DrawLaserFigures(degrees, degreesRefraction);
+ 
+    if( type_material == 1 ){
+        alignAnglesInExtremes(degrees, degreesRefraction);
+        DrawLine(x_positions90[degrees], y_positions90[degrees], x_end, y_end, MaxIntensityLaser, R, G, B);
+        DrawLine(x_refraction[degrees], y_refraction[degrees], x_end, y_end, MaxIntensityLaser, R, G, B);
+    }else
+        DrawLaserFigures(degrees, degreesRefraction);
+   
 }
 
 $(document).ready(function(){
@@ -504,6 +512,9 @@ $('#select-refractive-index-2').change(function(){
         
         $('#checkboxReflection').prop('checked', false);
         $('#checkboxRefraction').prop('checked', false);
+        $('#checkboxReflection').prop('disabled', true);
+        $('#checkboxRefraction').prop('disabled', true);
+
         $('.angle-reflection-result').empty().text( '-°' );
         $('.angle-refraction-result').empty().text( '-°' );
         $('.result-max-distance').text( h+' cm' );
@@ -511,11 +522,14 @@ $('#select-refractive-index-2').change(function(){
         alignAnglesInExtremes(degrees, degreesRefraction);
         DrawLine(x_positions90[degrees], y_positions90[degrees], x_end, y_end, MaxIntensityLaser, R, G, B);
         DrawLine(x_refraction[degrees], y_refraction[degrees], x_end, y_end, MaxIntensityLaser, R, G, B);
+        ChangeLinesColor();
     }else{
         boolReflection = true;
         boolRefraction = true;
         $('#checkboxReflection').prop('checked', true);
         $('#checkboxRefraction').prop('checked', true);
+        $('#checkboxReflection').removeAttr('disabled');
+        $('#checkboxRefraction').removeAttr('disabled');
         $('.result-max-distance').text( getMaxDistance( degrees, RefractionIndex, h ).toFixed(2)+' cm' );
 
         alignAnglesInExtremes(degrees, degreesRefraction);
