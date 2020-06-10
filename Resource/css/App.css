@@ -35,6 +35,7 @@ body{
 }
 
 #img-transportador{
+    display: none;
     position: absolute;
     left: 42%;
     right: auto;
@@ -198,7 +199,7 @@ th, td{
     padding: 8px !important;
 }
 
-.resultReflectance, .resultTransmittance{
+.resultReflectance, .resultTransmittance, .resultReflectionIntensity, .resultRefractionIntensity{
     font-size: 20px;
     font-weight: bold;
 }

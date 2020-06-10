@@ -68,7 +68,6 @@ function PaintBackgroundColor(){
     var select_index_2 = $('#select-refractive-index-2');
     var select_index_3 = $('#select-refractive-index-3');
     var BackgroundColor = '';
-    console.log(state_index_3);
 
     if( state_index_3 ){
         $('.ref-index3-container').css('display', 'block');
@@ -122,7 +121,7 @@ function DrawLaserFigures(degrees, degreesRefraction){
         // Laser source
         DrawLine(x_positions90[degrees-1], y_positions90[degrees-1], x_end, y_end, MaxIntensityLaser, R, G, B);
         // Reflection 
-        DrawLine(x_reflection[degrees+1], y_reflection[degrees+1], x_end, y_end, IntensityReflection, R, G, B );
+        DrawLine(x_reflection[degrees-1], y_reflection[degrees-1], x_end, y_end, IntensityReflection, R, G, B );
         // Refraction
         DrawLine(x_refraction[ Math.round(degreesRefraction) ], y_refraction[ Math.round(degreesRefraction) ], x_end, y_end, IntensityRefraction, R, G, B );
     }else if( boolReflection ){
@@ -144,18 +143,25 @@ function DrawLaserFigures(degrees, degreesRefraction){
 function alignAnglesInExtremes(degrees, degreesRefraction){
     var boolReflection = $('#checkboxReflection').prop('checked');
     var boolRefraction = $('#checkboxRefraction').prop('checked');
+    var intensityLaser = parseInt( $('#txt-laser-intensity').val().split(' ')[0] );
 
     if( boolReflection && boolRefraction ){
         if( degrees == 90 ){
             $('.angle-reflection-result').empty().text( '-°' );
             $('.angle-refraction-result').empty().text( '-°' );
-                
+
+            $('.resultReflectance').text( '1.00' );
+            $('.resultTransmittance').text( '0.00' );
+            $('.resultReflectionIntensity').text( intensityLaser+'.00 mW' );
+            $('.resultRefractionIntensity').text( '0.00 mW' );
+
             $('#svg_paint').empty();
             DrawLine( x_positions90[degrees-1], y_positions90[degrees-1]+3, x_end+x_positions90[degrees-1], y_end-1, MaxIntensityLaser, R, G, B );
         }else if( degrees == 0 ){
             $('.angle-reflection-result').empty().text( '0°' );
             $('.angle-refraction-result').empty().text( '0°' );  
             $('.result-max-distance').text( h+' cm' );
+            LaserIntensityViewAndResult();
 
             $('#svg_paint').empty();
             DrawLine( x_positions90[degrees+1]+4, y_positions90[degrees+1], x_end, y_end+y_end, MaxIntensityLaser, R, G, B );
@@ -163,56 +169,90 @@ function alignAnglesInExtremes(degrees, degreesRefraction){
             $('.angle-reflection-result').empty().text(degrees+'°');
             $('.angle-refraction-result').empty().text( degreesRefraction.toFixed(1)+'°');
             $('.result-max-distance').text( getMaxDistance( degrees, RefractionIndex, h ).toFixed(2)+' cm' );
+            LaserIntensityViewAndResult();
         }
     }else if( boolReflection ){
         if( degrees == 90 ){
             $('.angle-reflection-result').empty().text( '-°' );
             $('.angle-refraction-result').empty().text( '-°' );
+            $('.resultReflectance').text( '1.00' );
+            $('.resultTransmittance').text( '0.00' );
+            $('.resultReflectionIntensity').text( intensityLaser+'.00 mW' );
+            $('.resultRefractionIntensity').text( '0.00 mW' );
 
             $('#svg_paint').empty();
             DrawLine( x_positions90[degrees], y_positions90[degrees]+3, x_end+x_positions90[degrees], y_end-1, MaxIntensityLaser, R, G, B );
         }else if( degrees == 0 ){
             $('.angle-reflection-result').empty().text( '0°' );
 
+            $('.resultReflectance').text( '0.00' );
+            $('.resultTransmittance').text( '1.00' );
+            $('.resultReflectionIntensity').text( '0.00 mW' );
+            $('.resultRefractionIntensity').text( intensityLaser+'.00 mW' );
+
             $('#svg_paint').empty();
             DrawLine( x_positions90[degrees]+4, y_positions90[degrees], x_end, y_end+y_end, MaxIntensityLaser, R, G, B );
-        }else
+        }else{
             $('.angle-reflection-result').empty().text( degrees+'°' );
+            LaserIntensityViewAndResult();
+        }
     }else if( boolRefraction ){
         if( degrees == 90 ){
             $('.angle-reflection-result').empty().text( '-°' );
             $('.angle-refraction-result').empty().text( '-°' );
+            $('.resultReflectance').text( '-' );
+            $('.resultTransmittance').text( '-' );
+            $('.resultReflectionIntensity').text( '-' );
+            $('.resultRefractionIntensity').text( '-' );
 
             $('#svg_paint').empty();
             DrawLine( x_positions90[degrees], y_positions90[degrees]+3, x_end+x_positions90[degrees], y_end-1, MaxIntensityLaser, R, G, B );
         }else if( degrees == 0 ){
             $('.angle-refraction-result').empty().text( '0°' );
             $('.result-max-distance').text( h+' cm' );
+            $('.resultReflectance').text( '-' );
+            $('.resultTransmittance').text( '-' );
+            $('.resultReflectionIntensity').text( '-' );
+            $('.resultRefractionIntensity').text( '-' );
 
             $('#svg_paint').empty();
             DrawLine( x_positions90[degrees+1]+4, y_positions90[degrees+1], x_end, y_end+y_end, MaxIntensityLaser, R, G, B );
         }else{
             $('.angle-refraction-result').empty().text( degreesRefraction.toFixed(1)+'°');
             $('.result-max-distance').text( getMaxDistance( degrees, RefractionIndex, h ).toFixed(2)+' cm' );
+            
+            LaserIntensityViewAndResult();
         }
     }else{
+        $('.resultReflectance').text( '-' );
+        $('.resultTransmittance').text( '-' );
+        $('.resultReflectionIntensity').text( '-' );
+        $('.resultRefractionIntensity').text( '-' );
+
         $('#svg_paint').empty();
-        DrawLine( x_positions90[degrees+1]+4, y_positions90[degrees+1], x_end, y_end, MaxIntensityLaser, R, G, B );
+        DrawLine( x_positions90[degrees], y_positions90[degrees], x_end, y_end, MaxIntensityLaser, R, G, B );
+        console.log( 'AlignAnglesInExtremes' )
     }
 }
 
-function getCoefficient_R(n1, n2){
-    var frac;
-    frac = ( n2 - n1 )/( n2 + n1 );
+function getCoefficient_R(n1, n2, degrees, degreesRefraction){
+//    frac = ( n2 - n1 )/( n2 + n1 );
+    var r, R;
 
-    return Math.pow( frac, 2 );
+    r = ( n1*Math.cos( toRadians(degrees) ) - n2*Math.cos( toRadians(degreesRefraction) ) )/( n1*Math.cos( toRadians(degrees) ) + n2*Math.cos( toRadians(degreesRefraction) ) );
+    R = Math.pow(r, 2);
+
+    return R;
 }
 
-function getCoefficient_T(n1, n2){
-    var frac;
-    frac = ( 4*n1*n2 )/( Math.pow( (n1 + n2), 2) );
+function getCoefficient_T(n1, n2, degrees, degreesRefraction){
+//    frac = ( 4*n1*n2 )/( Math.pow( (n1 + n2), 2) );
+    var t, T;
 
-    return frac;
+    t = ( 2*n1*Math.cos( toRadians(degrees) ) )/( n1*Math.cos( toRadians(degrees) ) + n2*Math.cos( toRadians(degreesRefraction) ) );
+    T = ( n2*Math.cos( toRadians(degreesRefraction) ) )/( n1*Math.cos( toRadians(degrees) ) )*Math.pow(t, 2);
+
+    return T;
 }
 
 function getMaxDistance(theta, n, h){
@@ -292,12 +332,42 @@ function ChangeLinesColor(){
     B = Color[2];
  
     if( type_material == 1 ){
-        alignAnglesInExtremes(degrees, degreesRefraction);
-        DrawLine(x_positions90[degrees], y_positions90[degrees], x_end, y_end, MaxIntensityLaser, R, G, B);
+        //alignAnglesInExtremes(degrees, degreesRefraction);
+        $('.angle-reflection-result').empty().text( '-°' );
+        $('.angle-refraction-result').empty().text( '-°' );
+        $('.resultReflectance').text( '-' );
+        $('.resultTransmittance').text( '-' );
+        $('.resultReflectionIntensity').text( '-' );
+        $('.resultRefractionIntensity').text( '-' );
+
+        DrawLine(x_positions90[degrees+1]+8, y_positions90[degrees+1], x_end, y_end, MaxIntensityLaser, R, G, B);
         DrawLine(x_refraction[degrees], y_refraction[degrees], x_end, y_end, MaxIntensityLaser, R, G, B);
     }else
         DrawLaserFigures(degrees, degreesRefraction);
    
+}
+
+function LaserIntensityViewAndResult(){
+    // Data require
+    var txtLaserPosition = $('#txtLaserPosition');
+    var degrees = parseInt(txtLaserPosition.val().split('°')[0]);
+    var degreesRefraction = Snell_Law(1, RefractionIndex, degrees);
+    var intensityLaser = parseInt( $('#txt-laser-intensity').val().split(' ')[0] );
+
+    // Calculated R, T, Intensity Reflection and Intensity Refraction
+    var R_coefficient = getCoefficient_R(  1.00, RefractionIndex, degrees, degreesRefraction).toFixed(2);
+    var T_coefficient = getCoefficient_T(1.00, RefractionIndex, degrees, degreesRefraction).toFixed(2);
+    IntensityReflection = parseFloat(R_coefficient) + 0.1;
+    IntensityRefraction = parseFloat(T_coefficient) + 0.1;
+
+    var IReflection_result = intensityLaser*R_coefficient;
+    var IRefraction_result = intensityLaser*T_coefficient;
+
+    // Show the result
+    $('.resultReflectionIntensity').text(IReflection_result.toFixed(2)+' mW');
+    $('.resultRefractionIntensity').text(IRefraction_result.toFixed(2)+' mW');
+    $('.resultReflectance').text( R_coefficient );
+    $('.resultTransmittance').text( T_coefficient );
 }
 
 $(document).ready(function(){
@@ -310,6 +380,7 @@ $(document).ready(function(){
     $('#checkboxImgTransportador').prop('checked', true);
     $('#checkboxReflection').prop('checked', true);
     $('#checkboxRefraction').prop('checked', true);
+    $('#checkboxImgTransportador').prop('checked', false);
     $('#select-refractive-index-2').val(2);
     $('#range-color').val(450);
 
@@ -317,9 +388,6 @@ $(document).ready(function(){
         RefractionIndex = SetRefractionIndex(type_material);
     var boolReflection = $('#checkboxReflection').prop('checked');
     var boolRefraction = $('#checkboxRefraction').prop('checked');
-
-    $('.resultReflectance').text( getCoefficient_R(1.00, RefractionIndex).toFixed(2) );
-    $('.resultTransmittance').text( getCoefficient_T(1.00, RefractionIndex).toFixed(2) );
 
     cont = 0;
     for(i=0; i<(x_positions.length+1)/4; i++){
@@ -348,6 +416,7 @@ $(document).ready(function(){
     PaintBackgroundColor();
     DrawLaserFigures(degrees, degreesRefraction);
     alignAnglesInExtremes(degrees, degreesRefraction);
+    LaserIntensityViewAndResult();
 });
 
 $('#range-color').on('mousedown mousemove change', function(){
@@ -439,13 +508,16 @@ $('#btnMoreDegrees').on('click', function(){
         $('#checkboxRefraction').prop('checked', false);
         $('.angle-reflection-result').empty().text( '-°' );
         $('.angle-refraction-result').empty().text( '-°' );
-
+        $('.resultReflectance').text( '-' );
+        $('.resultTransmittance').text( '-' );
         $('#svg_paint').empty();
-        DrawLine( x_positions90[degrees], y_positions90[degrees]+3, x_end, y_end, MaxIntensityLaser, R, G, B );
-        DrawLine( x_refraction[degrees], y_refraction[degrees]+3, x_end, y_end, MaxIntensityLaser, R, G, B );
+
+        DrawLine( x_positions90[degrees+1]+8, y_positions90[degrees], x_end, y_end, MaxIntensityLaser, R, G, B );
+        DrawLine( x_refraction[degrees+1], y_refraction[degrees+1], x_end, y_end, MaxIntensityLaser, R, G, B );
     }else{
         DrawLaserFigures(degrees, degreesRefraction);
         alignAnglesInExtremes(degrees, degreesRefraction);
+        //LaserIntensityViewAndResult();
     }
 });
 
@@ -461,8 +533,11 @@ $('#btnLessDegrees').on('click', function(){
 
     if( degrees > 0 )
         degrees = degrees - 1;
-    else
+    else{
         M.toast({html: 'Min 0 degrees', classes: 'rounded'})
+        $('.resultReflectance').text( '0' );
+        $('.resultTransmittance').text( '1' );
+    }
     
     txtLaserPosition.val(degrees+'°');
 
@@ -471,11 +546,16 @@ $('#btnLessDegrees').on('click', function(){
         $('.angle-refraction-result').empty().text( '-°' );
 
         $('#svg_paint').empty();
-        DrawLine( x_positions90[degrees], y_positions90[degrees]+3, x_end, y_end, MaxIntensityLaser, R, G, B );
-        DrawLine( x_refraction[degrees], y_refraction[degrees]+3, x_end, y_end, MaxIntensityLaser, R, G, B );
+        $('.resultReflectance').text( '-' );
+        $('.resultTransmittance').text( '-' );
+        
+        DrawLine( x_positions90[degrees+1]+8, y_positions90[degrees], x_end, y_end, MaxIntensityLaser, R, G, B );
+        DrawLine( x_refraction[degrees+1], y_refraction[degrees+1], x_end, y_end, MaxIntensityLaser, R, G, B );
     }else{
         DrawLaserFigures(degrees, degreesRefraction);
         alignAnglesInExtremes(degrees, degreesRefraction);
+
+        //LaserIntensityViewAndResult();
     }
 });
 
@@ -517,12 +597,12 @@ $('#select-refractive-index-2').change(function(){
 
         $('.angle-reflection-result').empty().text( '-°' );
         $('.angle-refraction-result').empty().text( '-°' );
-        $('.result-max-distance').text( h+' cm' );
 
-        alignAnglesInExtremes(degrees, degreesRefraction);
-        DrawLine(x_positions90[degrees], y_positions90[degrees], x_end, y_end, MaxIntensityLaser, R, G, B);
-        DrawLine(x_refraction[degrees], y_refraction[degrees], x_end, y_end, MaxIntensityLaser, R, G, B);
+//        alignAnglesInExtremes(degrees, degreesRefraction);
+//        DrawLine(x_positions90[degrees], y_positions90[degrees], x_end, y_end, MaxIntensityLaser, R, G, B);
+//        DrawLine(x_refraction[degrees], y_refraction[degrees], x_end, y_end, MaxIntensityLaser, R, G, B);
         ChangeLinesColor();
+        console.log('Type material 1');
     }else{
         boolReflection = true;
         boolRefraction = true;
@@ -534,37 +614,57 @@ $('#select-refractive-index-2').change(function(){
 
         alignAnglesInExtremes(degrees, degreesRefraction);
         DrawLaserFigures(degrees, degreesRefraction);
+        LaserIntensityViewAndResult();
     }
 
-    $('.resultReflectance').text( getCoefficient_R(1.00, RefractionIndex).toFixed(2) );
-    $('.resultTransmittance').text( getCoefficient_T(1.00, RefractionIndex).toFixed(2) );
     PaintBackgroundColor();
 });
 
 $('#btn-more-laser-intensity').on('click', function(){
+    var txtLaserPosition = $('#txtLaserPosition');
+    var degrees = parseInt(txtLaserPosition.val().split('°')[0]);
+    var degreesRefraction = Snell_Law(1, RefractionIndex, degrees);
     var laser_intensity = parseInt( $('#txt-laser-intensity').val().split(' ')[0] );
-    console.log( laser_intensity );
+    var type_material =  $('#select-refractive-index-2').val();
 
     if( laser_intensity < 80 )
         laser_intensity = laser_intensity + 1;
     else
         M.toast({html: 'Max 80 mW', classes: 'rounded'});
 
-    $('#txt-laser-intensity').val(laser_intensity+' mW');
+    if( type_material == 1){
+        $('.angle-reflection-result').empty().text( '-°' );
+        $('.angle-refraction-result').empty().text( '-°' );
+        $('.resultReflectance').text( '-' );
+        $('.resultTransmittance').text( '-' );
+    }else{
+        LaserIntensityViewAndResult();
+    }
 
+    $('#txt-laser-intensity').val(laser_intensity+' mW');
 });
 
 $('#btn-less-laser-intensity').on('click', function(){
+    var txtLaserPosition = $('#txtLaserPosition');
+    var degrees = parseInt(txtLaserPosition.val().split('°')[0]);
     var laser_intensity = parseInt( $('#txt-laser-intensity').val().split(' ')[0] );
-    console.log( laser_intensity );
-
-    if( laser_intensity > 50 )
+    var type_material =  $('#select-refractive-index-2').val();
+    
+    if( laser_intensity > 10 )
         laser_intensity = laser_intensity - 1;
     else
         M.toast({html: 'Min 50 mW', classes: 'rounded'});
 
-    $('#txt-laser-intensity').val(laser_intensity+' mW');
+    if( type_material == 1 ){
+        $('.angle-reflection-result').empty().text( '-°' );
+        $('.angle-refraction-result').empty().text( '-°' );
+        $('.resultReflectance').text( '-' );
+        $('.resultTransmittance').text( '-' );        
+    }else{
+        LaserIntensityViewAndResult();
+    }
 
+    $('#txt-laser-intensity').val(laser_intensity+' mW');
 });
 
 $('.btn-draw-circle').on('click', function(){
