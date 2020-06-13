@@ -42,6 +42,7 @@ function toDegrees( radians ){
 }
 
 function Snell_Law( n1, n2, theta1 ){
+    // snell = asind( (n1/n2)*sind(40) )
     var theta1_radians = toRadians(theta1);
     var argument_degrees = (n1/n2)*Math.sin( theta1_radians );
     var theta2 = Math.asin( argument_degrees );
@@ -121,14 +122,14 @@ function DrawLaserFigures(degrees, degreesRefraction){
         // Laser source
         DrawLine(x_positions90[degrees-1], y_positions90[degrees-1], x_end, y_end, MaxIntensityLaser, R, G, B);
         // Reflection 
-        DrawLine(x_reflection[degrees-1], y_reflection[degrees-1], x_end, y_end, IntensityReflection, R, G, B );
+        DrawLine(x_reflection[degrees+1], y_reflection[degrees+1], x_end, y_end, IntensityReflection, R, G, B );
         // Refraction
         DrawLine(x_refraction[ Math.round(degreesRefraction) ], y_refraction[ Math.round(degreesRefraction) ], x_end, y_end, IntensityRefraction, R, G, B );
     }else if( boolReflection ){
         // Laser source
         DrawLine(x_positions90[degrees-1], y_positions90[degrees-1], x_end, y_end, MaxIntensityLaser, R, G, B);
         // Reflection 
-        DrawLine(x_reflection[degrees-1], y_reflection[degrees-1], x_end, y_end, IntensityReflection, R, G, B );
+        DrawLine(x_reflection[degrees+1], y_reflection[degrees+1], x_end, y_end, IntensityReflection, R, G, B );
     }else if( boolRefraction ){
         // Laser source
         DrawLine(x_positions90[degrees-1], y_positions90[degrees-1], x_end, y_end, MaxIntensityLaser, R, G, B);
@@ -231,7 +232,6 @@ function alignAnglesInExtremes(degrees, degreesRefraction){
 
         $('#svg_paint').empty();
         DrawLine( x_positions90[degrees], y_positions90[degrees], x_end, y_end, MaxIntensityLaser, R, G, B );
-        console.log( 'AlignAnglesInExtremes' )
     }
 }
 
@@ -370,6 +370,27 @@ function LaserIntensityViewAndResult(){
     $('.resultTransmittance').text( T_coefficient );
 }
 
+function DrawSquareLaser(degrees){
+    var svg = document.getElementsByTagName('svg')[0];
+
+    var svgns  = 'http://www.w3.org/2000/svg';
+    var circle = document.createElementNS(svgns, 'rect');
+    
+    var x_0 = x_positions90[degrees-1], y_0 = y_positions90[degrees-1];
+
+    circle.setAttribute("x", 'calc('+parseInt(x_0)+' - 10)' );
+    circle.setAttribute("y", 'calc('+parseInt(y_0-32)+' - 10)' );
+    circle.setAttribute("width", 20 );
+    circle.setAttribute("height", 40 );
+    circle.style.strokeWidth = "3px";
+    circle.style.stroke = 'black';
+    circle.style.fill = 'black';
+    circle.setAttribute('transform', 'rotate(-'+parseInt(degrees)+')');
+    circle.setAttribute('transform-origin', ''+x_0+' '+y_0+'');
+    
+    svg.appendChild(circle);
+}
+
 $(document).ready(function(){
     // Initialize Materialize components
     $('.collapsible').collapsible();
@@ -417,10 +438,15 @@ $(document).ready(function(){
     DrawLaserFigures(degrees, degreesRefraction);
     alignAnglesInExtremes(degrees, degreesRefraction);
     LaserIntensityViewAndResult();
+    DrawSquareLaser(degrees);
 });
 
 $('#range-color').on('mousedown mousemove change', function(){
+    var txtLaserPosition = $('#txtLaserPosition');
+    var degrees = parseInt(txtLaserPosition.val().split('°')[0]);
+    
     ChangeLinesColor();
+    DrawSquareLaser(degrees);
 });
 
 $('#checkboxReflection').on('change', function(){
@@ -430,6 +456,7 @@ $('#checkboxReflection').on('change', function(){
     var degreesRefraction = Snell_Law(1, RefractionIndex, degrees);
 
     DrawLaserFigures(degrees, degreesRefraction);
+    DrawSquareLaser (degrees);
 
     if( boolReflection )
         $('.angle-reflection-result').empty().text(degrees+'°');
@@ -444,6 +471,7 @@ $('#checkboxRefraction').on('change', function(){
     var degreesRefraction = Snell_Law(1, RefractionIndex, degrees);
 
     DrawLaserFigures(degrees, degreesRefraction);
+    DrawSquareLaser (degrees);
 
     if( boolRefraction ){
         $('.angle-refraction-result').empty().text(degreesRefraction.toFixed(1)+'°');
@@ -514,9 +542,11 @@ $('#btnMoreDegrees').on('click', function(){
 
         DrawLine( x_positions90[degrees+1]+8, y_positions90[degrees], x_end, y_end, MaxIntensityLaser, R, G, B );
         DrawLine( x_refraction[degrees+1], y_refraction[degrees+1], x_end, y_end, MaxIntensityLaser, R, G, B );
+        DrawSquareLaser(degrees);
     }else{
         DrawLaserFigures(degrees, degreesRefraction);
         alignAnglesInExtremes(degrees, degreesRefraction);
+        DrawSquareLaser(degrees);
         //LaserIntensityViewAndResult();
     }
 });
@@ -551,10 +581,11 @@ $('#btnLessDegrees').on('click', function(){
         
         DrawLine( x_positions90[degrees+1]+8, y_positions90[degrees], x_end, y_end, MaxIntensityLaser, R, G, B );
         DrawLine( x_refraction[degrees+1], y_refraction[degrees+1], x_end, y_end, MaxIntensityLaser, R, G, B );
+        DrawSquareLaser(degrees);
     }else{
         DrawLaserFigures(degrees, degreesRefraction);
         alignAnglesInExtremes(degrees, degreesRefraction);
-
+        DrawSquareLaser(degrees);
         //LaserIntensityViewAndResult();
     }
 });
@@ -618,6 +649,7 @@ $('#select-refractive-index-2').change(function(){
     }
 
     PaintBackgroundColor();
+    DrawSquareLaser(degrees);
 });
 
 $('#btn-more-laser-intensity').on('click', function(){
@@ -665,10 +697,6 @@ $('#btn-less-laser-intensity').on('click', function(){
     }
 
     $('#txt-laser-intensity').val(laser_intensity+' mW');
-});
-
-$('.btn-draw-circle').on('click', function(){
-    DrawCircle();
 });
 
 /*
